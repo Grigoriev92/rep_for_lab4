@@ -7,16 +7,6 @@ cellpadd=0;//отступ от границы до содержимого по �
 }
  
  
-//функция удаления строк
-function delrow() {
-var rows = document.getElementById("rows");
-var lastrowindex=mytable.rows.length-1;
-for(i=0;i<Math.abs(nrow-rows.value);i++) {
-mytable.deleteRow(lastrowindex);
-lastrowindex=lastrowindex-1;
-}
-nrow=rows.value;
-}
  
 //проверка: добавить столбцы или уменьшить?
 function change_cells() {
