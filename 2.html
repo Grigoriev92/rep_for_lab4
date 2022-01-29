@@ -1,0 +1,285 @@
+<script type="text/javascript" language="javascript">
+nrow=2;//количество строк по умолчанию
+ncells=2;//количество столбцов по умолчанию
+bs="none";//стиль границ таблицы по умолчанию
+cellpadd=0;//отступ от границы до содержимого по умолчанию
+ 
+//проверка: удалить или добавить строку?
+function change_tr() {
+rows = document.getElementById("rows");
+if(rows.value-nrow>0){
+        addrow();
+}
+else {
+    if(rows.value>0)
+    {
+    delrow();
+    }
+}
+}
+ 
+//функция добавления строк
+function addrow() {
+rows = document.getElementById("rows");
+ecells=document.getElementById("ecells");
+for(i=0;i<rows.value-nrow;i++)
+{
+var newrow = mytable.insertRow(0);
+for(k=0;k<ecells.value;k++)
+{
+newrow.insertCell(0).innerHTML = "<input type='text' value='текст'size='4'>";
+}
+}
+nrow=rows.value;
+}
+ 
+//функция удаления строк
+function delrow() {
+var rows = document.getElementById("rows");
+var lastrowindex=mytable.rows.length-1;
+for(i=0;i<Math.abs(nrow-rows.value);i++) {
+mytable.deleteRow(lastrowindex);
+lastrowindex=lastrowindex-1;
+}
+nrow=rows.value;
+}
+ 
+//проверка: добавить столбцы или уменьшить?
+function change_cells() {
+var ecells = document.getElementById("ecells");
+if(ecells.value-ncells>0){
+        addcells();
+}
+else {
+    if(ecells.value>0)
+    {
+    delcells();
+    }
+}
+}
+//добавление столбцов
+function addcells() {
+var ecells = document.getElementById("ecells");
+for(i=0;i<mytable.rows.length;i++)
+{
+rowname=mytable.rows[i];
+for(e=0;e<Math.abs(ecells.value-ncells);e++)
+{
+rowname.insertCell(0).innerHTML = "<input type='text' value='текст'size='4'>";
+}
+}
+ncells=ecells.value;
+}
+//удаление столбцов
+function delcells() {
+var ecells = document.getElementById("ecells");
+for(i=0;i<mytable.rows.length;i++)
+{
+rowname=mytable.rows[i];
+for(e=0;e<Math.abs(ecells.value-ncells);e++)
+{
+rowname.deleteCell(0);
+}
+}
+ncells=ecells.value;
+ 
+}
+//изменение цвета границ
+function addbordercolor() {
+ switch(document.getElementById("bordcolor").selectedIndex){
+        case 0:
+        bc="black";
+        break;
+        case 1:
+        bc="red";
+        break;
+        case 2:
+        bc="green";
+        break;
+        case 3:
+        bc="blue";
+        break;
+        case 4:
+        bc="#806b08";
+        break;
+        }
+}
+//изменение отображения внешних границ
+function addframe() {   
+  switch(document.getElementById("bordframe").selectedIndex) {
+        case 0:
+        bframe="border";
+        break;
+        case 1:
+        bframe="void"; 
+        break;
+        case 2:
+        bframe="above";  
+        break;
+        case 3:
+        bframe="below";
+        break;
+        case 4:
+        bframe="rhs";
+        break;
+        case 5:
+        bframe="lhs"; 
+        break;
+        case 6:
+        bframe="hsides";
+        break;
+        case 7:
+        bframe="vsides";
+        break;
+        }
+}
+//изменение отображения внутренних границ
+function addrules() {
+ switch (document.getElementById("bordrules").selectedIndex) {
+        case 0:
+        brul="all";
+        break;
+        case 1:
+        brul="none";
+        break;
+        case 2:
+        brul="cols";
+        break;
+        case 3:
+        brul="rows";
+        break;
+        }
+}
+//расположение содержимого ячейки
+function change_align() {
+ switch (document.getElementById("cell_align").selectedIndex) {
+        case 0:
+        cellal="center";
+        break;
+        case 1:
+        cellal="left";
+        break;
+        case 2:
+        cellal="right";
+        break;
+        }
+}
+ 
+//формирование итоговой таблицы и кода
+function get_result() {
+var inputnum=document.getElementsByTagName("input");
+var inindex=4;//поля для ввода данных в ячейки таблицы начинаются с 5-го input 
+bord=document.getElementById("bord");
+cellpadd = document.getElementById("cellpadd").value; 
+bodyt="<table "+"border="+bord.value+" bordercolor='"+bc+"' frame='"+bframe+"'"+" rules='"+brul+"' cellpadding="+cellpadd+">";
+rows=document.getElementById("rows");
+ecells=document.getElementById("ecells");
+<!--формируем первую строку-заголовок--->
+bodyt=bodyt+"<tr align=center>";
+for(n=0;n<ecells.value;n++)
+     {
+bodyt=bodyt+"<td><b>"+inputnum[inindex].value+"</b></td>";
+  inindex=inindex+1;
+         }
+bodyt=bodyt+"</tr>";
+<!--формируем тело таблицы--->
+for(x=0;x<rows.value-1;x++)
+  {
+   bodyt=bodyt+"<tr align="+cellal+">";
+     for(n=0;n<ecells.value;n++)
+     {
+      bodyt=bodyt+"<td>"+inputnum[inindex].value+"</td>";
+      inindex=inindex+1;
+         }
+   bodyt=bodyt+"</tr>";
+  }
+bodyt=bodyt+"</table>";
+document.getElementById("result").innerHTML=bodyt;
+document.getElementById("itog_code").innerHTML="<textarea cols=100 rows=10 readonly>"+bodyt+"</textarea>";
+}
+ 
+</script>
+</head>
+ 
+<body>
+<div id="content">
+<h1>1.Укажите свойства таблицы:</h1>
+<table>
+<tr><td>Количество строк:</td><td><input type="number"name="rows"id="rows"size="20" onchange="change_tr()" value="2"></td></tr>
+<tr><td>Количество столбцов:</td><td><input type="number"id="ecells"name="ecells"size="20"onchange="change_cells()"value="2"></td></tr>
+<tr><td>Отступ от рамки до содержимого таблицы (cellpadding), px:</td><td> <input type="number"id="cellpadd"name="cellpadd"size="2"value="0"></td></tr>
+<tr><td>Граница таблицы в пикселях:</td><td><input type="text"id="bord"name="bord"size="20"value="1"></td></tr>
+<tr><td>Цвет границ таблицы:</td><td>
+<select size="1" name="bordcolor"id="bordcolor"onchange="addbordercolor()">
+  <option>черный</option>
+  <option>красный</option>
+  <option>зеленый</option>
+  <option>синий</option>
+  <option>коричневый</option>
+</select>
+</td></tr>
+<tr><td>Отображение внешних границ таблицы (frame):</td><td>
+<select size="1" name="bordframe"id="bordframe"onchange="addframe()">
+  <option>все границы</option>
+  <option>нет внешних границ</option>
+  <option>граница по верхнему краю таблицы</option>
+  <option>граница по нижнему краю таблицы</option>
+  <option>граница по правому краю таблицы</option>
+  <option>граница по левому краю таблицы</option>
+  <option>границы по верхнему и нижнему краям таблицы</option>
+  <option>граница по левому и правому краям таблицы</option>
+</select>
+</td></tr>
+<tr><td>Отображение внутренних границ таблицы (rules):</td><td>
+<select size="1" name="bordrules"id="bordrules"onchange="addrules()">
+  <option>все внутренние границы</option>
+  <option>нет границ</option>
+  <option>границы между столбцами</option>
+  <option>границы между строками</option>
+</select>
+</td></tr>
+<tr><td>Выравнивание содержимого ячеек:</td><td>
+<select size="1" name="cell_align"id="cell_align"onchange="change_align()">
+  <option>по центру</option>
+  <option>по левому краю</option>
+  <option>по правому краю</option>
+</select>
+</td></tr>
+</table>
+ 
+<h1>2.Введите значения в ячейки таблицы:</h1>
+ 
+ 
+<table id="my_table"name="my_table"cellpadding="2">
+<thead>
+<tr><th><input type="text" value="текст"size="4"></th><th><input type="text" value="текст"size="4"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td><input type="text" value="текст"size="4"></td>
+<td><input type="text" value="текст"size="4"></td>
+</tr>
+</tbody>
+</table>
+ 
+ 
+<h1>3.Все готово?</h1>
+<button onclick="get_result()">Посмотреть и получить код</button>
+<div id="result"name="result"></div>
+<div id="itog_code"name="itog_code"></div>
+</div>
+ 
+<script>
+//установка значений по умолчанию в полях при перезагрузке страницы (для вредных браузеров) 
+document.getElementById("rows").value=2;
+document.getElementById("ecells").value=2;
+document.getElementById("cellpadd").value=0;
+document.getElementById("bord").value=1;
+ 
+//установка всех других значений переменных при загрузке страницы или ее перезагрузке
+mytable = document.getElementById("my_table");
+addframe();
+addrules();
+addbordercolor();
+change_align();
+</script>
