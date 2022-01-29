@@ -4,18 +4,6 @@ ncells=2;//количество столбцов по умолчанию
 bs="none";//стиль границ таблицы по умолчанию
 cellpadd=0;//отступ от границы до содержимого по умолчанию
  
-//проверка: удалить или добавить строку?
-function change_tr() {
-rows = document.getElementById("rows");
-if(rows.value-nrow>0){
-        addrow();
-}
-else {
-    if(rows.value>0)
-    {
-    delrow();
-    }
-}
 }
  
 //функция добавления строк
