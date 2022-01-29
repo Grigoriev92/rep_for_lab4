@@ -6,20 +6,6 @@ cellpadd=0;//отступ от границы до содержимого по �
  
 }
  
-//функция добавления строк
-function addrow() {
-rows = document.getElementById("rows");
-ecells=document.getElementById("ecells");
-for(i=0;i<rows.value-nrow;i++)
-{
-var newrow = mytable.insertRow(0);
-for(k=0;k<ecells.value;k++)
-{
-newrow.insertCell(0).innerHTML = "<input type='text' value='текст'size='4'>";
-}
-}
-nrow=rows.value;
-}
  
 //функция удаления строк
 function delrow() {
